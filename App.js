@@ -5,7 +5,7 @@ import AddInput from "./components/AddInput";
 import TodoList from "./components/TodoList";
 import Empty from "./components/Empty";
 import Header from "./components/Header";
-import firestore from '@react-native-firebase/firestore';
+import firestore, { firebase } from '@react-native-firebase/firestore';
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -15,24 +15,49 @@ export default function App() {
     const date = wantee;
 
     firestore()
-      .collection('THREADS')
+      .collection('todo')
       .add({
-        text,
-        date,
-        createdAt: new Date().getTime()
-      });
+        todo: text,
+        datetodo: date,
+        createdAt: new Date().getTime(),
+        key: Math.random().toString()
+      }).then(() => addComplete(text)).catch((error) => console.log(error));
 
-    await firestore()
-      .collection('THREADS')
-      .set(
-        {
-          text,
-          date,
-          createdAt: new Date().getTime()
-        },
-        { merge: true }
-      );
+    // await firestore()
+    //   .collection('todo')
+    //   .set(
+    //     {
+    //       todo: text,
+    //       datetodo: date,
+    //       createdAt: new Date().getTime(),
+    //       key: Math.random().toString()
+    //     },
+    //     { merge: true }
+    //   );
   }
+
+  // const submitHandlerPBOW = (value, date) => {
+  //   // console.log('value')
+  //   firestore().collection('todotask').add({
+  //     value: value,
+  //     date: date.toISOString().slice(5, 18),
+  //     key: Math.random().toString(),
+  //   }).then(() => {
+  //     console.log('Compelete!!')
+  //   });
+  //   // setData((prevTodo) => {
+  //   //   return [
+  //   //     {
+  //   //       value: value,
+  //   //       date: date.toISOString().slice(0, 10),
+  //   //       key: Math.random().toString(),
+  //   //     },
+  //   //     ...prevTodo,
+  //   //   ];
+  //   // });
+  // };
+
+
 
   const submitHandler = (value, date) => {
     setData((prevTodo) => {
