@@ -42,40 +42,6 @@ export default function App() {
     return () => taskListener();
   }, []);
 
-  // useEffect(() => {
-  //   const taskListener = firestore()
-  //     .collection('todo')
-  //     .orderBy('createdAt', 'desc')
-  //     .onSnapshot(querySnapshot => {
-  //       const messages = querySnapshot.docs.map(doc => {
-  //         const firebaseData = doc.data();
-
-  //         const data = {
-  //           _id: doc.id,
-  //           text: '',
-  //           createdAt: new Date().getTime(),
-  //           ...firebaseData
-  //         };
-
-  //         if (!firebaseData.system) {
-  //           data.user = {
-  //             ...firebaseData.user,
-  //             name: firebaseData.user.email
-  //           };
-  //         }
-
-  //         return data;
-  //       });
-
-  //       setData(messages);
-  //     });
-
-  //   // Stop listening for updates whenever the component unmounts
-  //   return () => taskListener();
-  // }, []);
-
-
-
   const submitHandler = (value, date) => {
     setData((prevTodo) => {
 

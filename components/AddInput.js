@@ -3,6 +3,7 @@ import styled from "styled-components";
 import DatePicker from 'react-native-date-picker'
 
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { Alert } from "react-native";
 
 export default function AddInput({ submitHandler }) {
   const [value, setValue] = useState("");
@@ -16,7 +17,7 @@ export default function AddInput({ submitHandler }) {
   return (
     <ComponentContainer>
       <InputContainer>
-        <Input placeholder="Add Task..." onChangeText={onChangeText} />
+        <Input placeholder="Add Task..." onChangeText={onChangeText} ref={input => { this.textInput = input }} />
       </InputContainer>
       <CalendarButton onPress={() => setOpen(true)} >
         <AntDesign name="calendar" size={24} color="midnightblue" />
@@ -37,7 +38,13 @@ export default function AddInput({ submitHandler }) {
       />
       <SubmitButton
         onPress={() => {
-          setValue(submitHandler(value, date));
+          if(value.trim().length > 0){
+            setValue(submitHandler(value, date));
+            setValue("");
+            this.textInput.clear()
+          }else{
+            Alert.alert("Check !!","Please enter your remind.");
+          }
         }}
       >
         <AntDesign name="plus" size={24} color="midnightblue" />
