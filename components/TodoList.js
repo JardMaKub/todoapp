@@ -30,8 +30,8 @@ export default function TodoList({ item, deleteItem }) {
           <Entypo name="circle" size={24} color="midnightblue" />
         </CirlceContainer>
         <View>
-          <TextItem>{item.value}</TextItem>
-          <TextDate>{item.date}</TextDate>
+          <TextItem>{item.todo}</TextItem>
+          <TextDate>{item.datetodo}</TextDate>
         </View>
         <IconContainer onPress={() => ConfirmDialog()}>
           <MaterialIcons name="delete" size={24} color="midnightblue" />

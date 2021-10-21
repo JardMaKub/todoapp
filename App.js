@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StatusBar, FlatList } from "react-native";
 import styled from "styled-components";
 import AddInput from "./components/AddInput";
 import TodoList from "./components/TodoList";
 import Empty from "./components/Empty";
 import Header from "./components/Header";
-import firestore, { firebase } from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -22,40 +22,57 @@ export default function App() {
         createdAt: new Date().getTime(),
         key: Math.random().toString()
       }).then(() => addComplete(text)).catch((error) => console.log(error));
-
-    // await firestore()
-    //   .collection('todo')
-    //   .set(
-    //     {
-    //       todo: text,
-    //       datetodo: date,
-    //       createdAt: new Date().getTime(),
-    //       key: Math.random().toString()
-    //     },
-    //     { merge: true }
-    //   );
   }
 
-  // const submitHandlerPBOW = (value, date) => {
-  //   // console.log('value')
-  //   firestore().collection('todotask').add({
-  //     value: value,
-  //     date: date.toISOString().slice(5, 18),
-  //     key: Math.random().toString(),
-  //   }).then(() => {
-  //     console.log('Compelete!!')
-  //   });
-  //   // setData((prevTodo) => {
-  //   //   return [
-  //   //     {
-  //   //       value: value,
-  //   //       date: date.toISOString().slice(0, 10),
-  //   //       key: Math.random().toString(),
-  //   //     },
-  //   //     ...prevTodo,
-  //   //   ];
-  //   // });
-  // };
+
+  useEffect(() => {
+    const taskListener = firestore()
+      .collection('todo')
+      .onSnapshot(querySnapshot => {
+        const data = querySnapshot.docs.map(doc => {
+          return {
+            _id: doc.id,
+            todo: '',
+            datetodo: '',
+            ...doc.data()
+          };
+        });
+        setData(data);
+      });
+    return () => taskListener();
+  }, []);
+
+  // useEffect(() => {
+  //   const taskListener = firestore()
+  //     .collection('todo')
+  //     .orderBy('createdAt', 'desc')
+  //     .onSnapshot(querySnapshot => {
+  //       const messages = querySnapshot.docs.map(doc => {
+  //         const firebaseData = doc.data();
+
+  //         const data = {
+  //           _id: doc.id,
+  //           text: '',
+  //           createdAt: new Date().getTime(),
+  //           ...firebaseData
+  //         };
+
+  //         if (!firebaseData.system) {
+  //           data.user = {
+  //             ...firebaseData.user,
+  //             name: firebaseData.user.email
+  //           };
+  //         }
+
+  //         return data;
+  //       });
+
+  //       setData(messages);
+  //     });
+
+  //   // Stop listening for updates whenever the component unmounts
+  //   return () => taskListener();
+  // }, []);
 
 
 
