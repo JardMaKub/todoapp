@@ -5,16 +5,16 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import styled from "styled-components";
 
 export default function TodoList({ item, deleteItem }) {
-  const ConfirmDialog = () => {
+  const confirmDelete = () => {
     return Alert.alert(
-      "Are your sure ?",
+      "Delete Reminder ?",
       "Are you sure you want delete this remind ?",
       [
 
         {
           text: "Yes",
           onPress: () => {
-            deleteItem(item.key);
+            deleteItem(item._id);
           },
         },
         {
@@ -33,7 +33,7 @@ export default function TodoList({ item, deleteItem }) {
           <TextItem>{item.todo}</TextItem>
           <TextDate>{item.datetodo}</TextDate>
         </View>
-        <IconContainer onPress={() => ConfirmDialog()}>
+        <IconContainer onPress={() => confirmDelete()}>
           <MaterialIcons name="delete" size={24} color="midnightblue" />
         </IconContainer>
       </ListContainer>

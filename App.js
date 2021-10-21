@@ -21,7 +21,7 @@ export default function App() {
         datetodo: date,
         createdAt: new Date().getTime(),
         key: Math.random().toString()
-      }).then(() => addComplete(text)).catch((error) => console.log(error));
+      });
   }
 
 
@@ -95,9 +95,13 @@ export default function App() {
   };
 
   const deleteItem = (key) => {
-    setData((prevTodo) => {
-      return prevTodo.filter((todo) => todo.key != key);
-    });
+    firestore()
+      .collection('todo')
+      .doc(key).delete()
+      .catch((error) => console.log(error));
+    // setData((prevTodo) => {
+    //   return prevTodo.filter((todo) => todo.key != key);
+    // });
   };
 
   const searchItem = (keyword) => {
